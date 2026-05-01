@@ -74,7 +74,9 @@ jobs:
           if [[ "${{ github.event_name }}" == "schedule" || "${{ github.event_name }}" == "workflow_dispatch" ]]; then
             cat << 'EOF' > prompt.txt
           Check for upstream repository modifications from https://github.com/WildKernels/OnePlus_KernelSU_SUSFS.
-          If there are new updates, YOU MUST use standard `git merge upstream/main` (or equivalent) to integrate the updates. 
+          If there are new updates, YOU MUST integrate them. To avoid authentication issues with the upstream repository, use the following command to fetch:
+          `git fetch --no-tags https://github.com/WildKernels/OnePlus_KernelSU_SUSFS.git main:upstream-main`
+          Then, use standard `git merge upstream-main` into the current branch.
 
           STRICT WORKFLOW RULE (CRITICAL): 
           - You must remain on the CURRENT branch. Do not switch to or create any other branches.
