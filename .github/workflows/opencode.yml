@@ -109,6 +109,10 @@ jobs:
           6. Preserve USB DWC3 & OTG Support
           * Requirement: PROHIBITED to remove the "Add USB DWC3 & OTG Support" step.
           * Adherence: You must ensure that the step named "Add USB DWC3 & OTG Support" in `.github/actions/build-kernel/action.yml` is kept intact. Do not delete or disable it during merge.
+          7. Preserve Correct ReSukiSU Repository
+          * Background: The correct ReSukiSU repository is `https://github.com/ReSukiSU/ReSukiSU`.
+          * Requirement: PROHIBITED to change the ReSukiSU repository URL or references to any other fork (e.g., do NOT use `TheWildJames/ReSukiSU`).
+          * Adherence: Ensure all ReSukiSU download/setup scripts and repository owner/name variables in `.github/actions/build-kernel/action.yml`, `.github/workflows/build-kernel-release.yml`, and `README.md` point to the official `ReSukiSU/ReSukiSU`.
 
           ## ✅ Allowed to Sync (FOCUS ON THESE)
           * Device Configurations: New device JSON files in the `configs/` directory (e.g., OP13, OP15, etc.).
