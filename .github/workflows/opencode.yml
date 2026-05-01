@@ -72,9 +72,10 @@ jobs:
           if [[ "${{ github.event_name }}" == "schedule" || "${{ github.event_name }}" == "workflow_dispatch" ]]; then
             cat << 'EOF' > prompt.txt
           Check for upstream repository modifications from https://github.com/WildKernels/OnePlus_KernelSU_SUSFS.
-          If there are new updates, YOU MUST use a standard `git merge upstream/main` (or equivalent) to integrate the updates. 
+          If there are new updates, YOU MUST use standard `git merge upstream/main` (or equivalent) to integrate the updates. 
+          STRICT SECURITY RULE: NEVER PUSH DIRECTLY TO THE 'main' BRANCH! You MUST create a new feature branch (e.g., 'opencode/upstream-sync-TIMESTAMP') for ALL changes and open a Pull Request. Direct pushes to 'main' are strictly prohibited and will be considered a critical failure.
           WARNING: Do NOT run `git merge --abort` and switch to manually checking out files (e.g. `git checkout upstream/main -- configs/`)! You MUST resolve the conflicts within the merge process itself to preserve the upstream Git history and commit signatures. DO NOT squash everything into a single manual commit!
-          After the merge is successfully committed, create a Pull Request. YOU MUST STRICTLY FOLLOW THESE MERGE GUIDELINES:
+          After the merge is successfully committed to your feature branch, create a Pull Request to merge into 'main'. YOU MUST STRICTLY FOLLOW THESE MERGE GUIDELINES:
           
           # Project Maintenance & Upstream Sync Guidelines (OnePlus_KernelSU_SUSFS)
           This project is a fork of WildKernels, but maintains independence in core logic and Root solution selection. You must strictly adhere to the following guidelines.
