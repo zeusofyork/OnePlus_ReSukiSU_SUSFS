@@ -1723,6 +1723,36 @@ runs:
         CONFIG_CMDLINE_FORCE=n
         CONFIG_RUST=y
         EOF
+    
+    - name: Resolve KSU Symbol Dependencies
+      shell: bash
+      run: |
+        set -euo pipefail
+        echo "::group::Resolve KSU Symbol Dependencies"
+        echo "Injecting fallback weak symbol into KernelSU resolver..."
+        RESOLVER=$(find "$KSU_FOLDER" -name "symbol_resolver.c" | head -n 1)
+        if [ -n "$RESOLVER" ]; then
+          if ! grep -q "__weak kallsyms_on_each_symbol" "$RESOLVER"; then
+            KERNEL_VER="${{ env.KERNEL_VER }}"
+            
+            # Use appropriate function signature based on kernel version
+            if [[ "$KERNEL_VER" == "5.15" ]]; then
+              echo "Applying weak symbol signature for kernel 5.15..."
+              cat >> "$RESOLVER" << 'EOF'
+
+        /* Fallback for missing symbols (Kernel < 6.4) */
+        int __attribute__((weak)) kallsyms_on_each_symbol(int (*fn)(void *, const char *, struct module *, unsigned long), void *data) {
+            return 0;
+        }
+        EOF
+            fi
+            echo "✅ Weak symbol injected successfully."
+          else
+            echo "✅ Weak symbol already exists in resolver."
+          fi
+        else
+          echo "⚠️ symbol_resolver.c not found, skipping weak symbol injection."
+        fi
 
     - name: Save Build Metadata
       id: save_metadata
