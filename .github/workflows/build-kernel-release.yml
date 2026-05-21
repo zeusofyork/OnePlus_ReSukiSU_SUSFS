@@ -28,6 +28,9 @@ on:
           - android14-6.1
           - android13-5.15
           - android12-5.10
+          - OP15
+          - OP15r
+          - OP15T
         default: OOS14+15+16
       ksu_type:
         description: 'Select KSU Type'
@@ -158,12 +161,17 @@ jobs:
             android*-*.*)
               # Extract android version and kernel version
               IFS='-' read -r av kv <<< "$input"
-              
+
               # Build android*-* only for OOS15 and OOS16
               jq_filter="map(select(.os_version == \"OOS15\" or .os_version == \"OOS16\")) | map(select(.android_version == \"$av\" and .kernel_version == \"$kv\"))"
-              
+
               echo "ℹ️  Android-Kernel filter applied: $av-$kv"
               echo "   Restricted to: OOS15 and OOS16 only"
+              ;;
+            OP*)
+              # Single-device filter by exact model name (e.g. OP15, OP15r, OP15T)
+              jq_filter="map(select(.model == \"$input\"))"
+              echo "ℹ️  Single-device filter applied: $input"
               ;;
             *)
               echo "::warning::Unknown input '$input'. Using empty filter."
